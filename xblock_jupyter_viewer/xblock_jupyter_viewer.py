@@ -2,9 +2,15 @@
 
 import logging
 import pkg_resources
-from urllib import urlencode
+try:
 
-from django.core.urlresolvers import reverse
+    from urllib import urlencode
+
+except ImportError:
+
+    from urllib.parse import urlencode    
+
+from django.urls import reverse
 
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Integer
