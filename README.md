@@ -14,7 +14,52 @@ Prof. Barba used the XBlock in the second half of her course module, [Get Data O
 Check it out!
 
 ## Tutor Installation:
- 
+
+PLEASE TEST IT BEFORE USING IN PRODUCTION !!
+
+#### Install XBlock
+
+`cd "$(tutor config printroot)/env/build/openedx/requirements" `
+
+
+`git clone https://github.com/murat-polat/jupyter-edx-viewer-xblock `
+
+
+`echo "-e ./jupyter-edx-viewer-xblock" >> private.txt `
+
+
+`pip3 install -e jupyter-edx-viewer-xblock `
+
+#### Make YAML plugin
+
+This plugin is important for Tutor implemation
+
+`tutor plugins printroot `
+
+
+`mkdir "$(tutor plugins printroot)" `
+
+
+`cd   "$(tutor plugins printroot)" `
+
+`nano jupyter_viewer.yml ` then copy and paste all from the `jupyter_viewer.yml ` in to  the this file and save 
+
+`tutor plugins list `
+
+
+`tutor plugins enable jupyter_viewer `
+
+
+`tutor config save `
+
+
+`tutor images build openedx`
+
+
+`tutor local quickstart `
+
+
+
 
 ## Installation
 ### XBlock
