@@ -6,8 +6,8 @@ import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor, CellExecutionError
 from nbconvert import HTMLExporter
 
-from preprocessors import ImageReplacement, RemoveCustomCSS
-from post_processors import remove_box_shadow, insert_target_blank
+from .preprocessors import ImageReplacement, RemoveCustomCSS
+from .post_processors import remove_box_shadow, insert_target_blank
 
 
 log = logging.getLogger(__name__)
