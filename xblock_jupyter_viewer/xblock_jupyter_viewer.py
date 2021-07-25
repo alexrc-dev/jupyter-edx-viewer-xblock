@@ -2,13 +2,9 @@
 
 import logging
 import pkg_resources
-try:
-
-    from urllib import urlencode
-
-except ImportError:
-
-    from urllib.parse import urlencode    
+import urllib.request 
+from urllib.parse import urlencode, quote_plus
+ 
 
 from django.urls import reverse
 

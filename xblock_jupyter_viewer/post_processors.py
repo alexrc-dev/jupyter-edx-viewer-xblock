@@ -1,6 +1,6 @@
 import logging 
 import re
-
+import urllib.request
 log = logging.getLogger(__name__)
 
 
@@ -14,7 +14,7 @@ def remove_box_shadow(raw_html):
 
 def insert_target_blank(raw_html):
     """Adds 'target=_blank' attribute to all `<a href=...>` links """
-    return re.sub('(<a .+?>)', _match_fn, raw_html.encode('utf-8'))
+    return re.sub(b'(<a>)', _match_fn, raw_html.encode('utf-8'))
 
 
 def _match_fn(matchobj):

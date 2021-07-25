@@ -60,6 +60,8 @@ This plugin is important for Tutor implemation
 
 
 
+![](/src/JupyterViewer.png)
+
 
 ## Installation
 ### XBlock
