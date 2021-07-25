@@ -6,6 +6,6 @@ patches:
           ## This plugin and patches allow us to add URL and namespaces to edx-platform ##
           RUN echo "urlpatterns += (url(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> lms/urls.py
           RUN echo "urlpatterns += (url(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> cms/urls.py
-          RUN sed -i "s/# edx-drf-extensions/ 'xblock_jupyter_viewer',/g" lms/envs/common.py
-          RUN sed -i "s/# Unusual migrations/ 'xblock_jupyter_viewer',/g" cms/envs/common.py
+          RUN sed -i "s/# edx-drf-extensions/'xblock_jupyter_viewer',/g" lms/envs/common.py
+          RUN sed -i "s/# DRF filters/'xblock_jupyter_viewer',/g" cms/envs/common.py
           
