@@ -95,14 +95,14 @@ class JupyterViewerXBlock(XBlock, StudioEditableXBlockMixin):
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [
-            ("MyXBlock",
-             """<myxblock/>
+            ("JupyterViewerXBlock",
+             """<jupyterviewerxblock/>
              """),
-            ("Multiple MyXBlock",
+            ("Multiple JupyterViewerXBlock",
              """<vertical_demo>
-                <myxblock/>
-                <myxblock/>
-                <myxblock/>
+                <jupyterviewerxblock/>
+                <jupyterviewerxblock/>
+                <jupyterviewerxblock/>
                 </vertical_demo>
              """),
         ]
