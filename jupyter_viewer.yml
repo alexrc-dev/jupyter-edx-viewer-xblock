@@ -4,8 +4,23 @@ version: 0.1.0
 patches:
      openedx-dockerfile-pre-assets: |
           ## This plugin and patches allow us to add URL and namespaces to edx-platform ##
-          RUN echo "urlpatterns += (re_path(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> lms/urls.py
-          RUN echo "urlpatterns += (url(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> cms/urls.py
+          ## RUN echo "urlpatterns += (re_path(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> lms/urls.py
+          ## RUN echo "urlpatterns += (url(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> cms/urls.py
+
+          RUN echo "xblock_jupyter_url_patterns = []" >> lms/urls.py
+          RUN echo "try:" >> lms/urls.py
+          RUN echo "    xblock_jupyter_url_patterns += (re_path(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> lms/urls.py
+          RUN echo "except NameError or TypeError:" >> lms/urls.py
+          RUN echo "    xblock_jupyter_url_patterns += (url(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> lms/urls.py
+          RUN echo "urlpatterns += xblock_jupyter_url_patterns" >> lms/urls.py
+
+          RUN echo "xblock_jupyter_url_patterns = []" >> cms/urls.py
+          RUN echo "try:" >> cms/urls.py
+          RUN echo "    xblock_jupyter_url_patterns += (re_path(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> cms/urls.py
+          RUN echo "except NameError or TypeError:" >> cms/urls.py
+          RUN echo "    xblock_jupyter_url_patterns += (url(r'^api/jupyter/', include('xblock_jupyter_viewer.rest.urls', namespace='xblock_jupyter_viewer')),)" >> cms/urls.py
+          RUN echo "urlpatterns += xblock_jupyter_url_patterns" >> cms/urls.py
+
           RUN sed -i "s/# edx-drf-extensions/'xblock_jupyter_viewer',/g" lms/envs/common.py
           RUN sed -i "s/# DRF filters/'xblock_jupyter_viewer',/g" cms/envs/common.py
           
