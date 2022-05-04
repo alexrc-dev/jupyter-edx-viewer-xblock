@@ -101,7 +101,7 @@ class JupyterViewerXBlock(XBlock, StudioEditableXBlockMixin):
         base_url = base_url.format(urlencode({'url': self.jupyter_url}))
 
         try:
-            loader = ResourceLoader('jupyter_viewer')
+            loader = ResourceLoader('xblock_jupyter_viewer')
         except:
             loader = ResourceLoader('xblock_jupyter_viewer')
         context = dict(base_url=base_url, notebook_height=self.xblock_height)
