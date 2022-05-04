@@ -2,9 +2,8 @@
 
 import logging
 import pkg_resources
-import urllib.request 
+import urllib.request
 from urllib.parse import urlencode, quote_plus
- 
 
 from django.urls import reverse
 
@@ -12,6 +11,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, Integer
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
+from xblockutils.resources import ResourceLoader
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class JupyterViewerXBlock(XBlock, StudioEditableXBlockMixin):
     display_name = String(
         display_name="Display Name", default="Jupyter Notebook Viewer",
         scope=Scope.settings,
-        help="Name of this XBlock" 
+        help="Name of this XBlock"
     )
 
     jupyter_url = String(
@@ -67,7 +67,7 @@ class JupyterViewerXBlock(XBlock, StudioEditableXBlockMixin):
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
-    def student_view(self, context=None):
+    def student_view_past(self, context=None):
         base = reverse('xblock_jupyter_viewer:jupyter_nb_viewer') + "?{}"
 
         # setup start/end tags
@@ -81,12 +81,33 @@ class JupyterViewerXBlock(XBlock, StudioEditableXBlockMixin):
         # setup full url and inject into template iframe
         full_url = base.format(urlencode({'url': self.jupyter_url}))
         log.debug("Full URL: {}".format(full_url))
-        base_html = self.resource_string('static/html/student_view.html')\
+        base_html = self.resource_string('static/html/student_view.html') \
             .format(self.xblock_height, full_url)
-        
+
         # add html and css
         frag = Fragment(base_html)
         # frag.add_css(self.resource_string('static/css/style.css'))
+        return frag
+
+    def student_view(self, context=None):
+        base_url = reverse('xblock_jupyter_viewer:jupyter_nb_viewer') + "?{}"
+        # setup start/end tags
+        if self.start_tag != '':
+            base_url += "&{}".format(urlencode({'start': self.start_tag}))
+        if self.end_tag != '':
+            base_url += "&{}".format(urlencode({'end': self.end_tag}))
+        # Add Image root
+        base_url += "&{}".format(urlencode({'images_url': self.image_url}))
+        base_url = base_url.format(urlencode({'url': self.jupyter_url}))
+
+        try:
+            loader = ResourceLoader('jupyter_viewer')
+        except:
+            loader = ResourceLoader('xblock_jupyter_viewer')
+        context = dict(base_url=base_url, notebook_height=self.xblock_height)
+        template = loader.render_django_template(
+            'static/html/student_view.html', context=context)
+        frag = Fragment(template)
         return frag
 
     # TO-DO: change this to create the scenarios you'd like to see in the
@@ -106,4 +127,3 @@ class JupyterViewerXBlock(XBlock, StudioEditableXBlockMixin):
                 </vertical_demo>
              """),
         ]
-
