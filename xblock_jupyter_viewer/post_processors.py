@@ -14,7 +14,7 @@ def remove_box_shadow(raw_html):
 
 def insert_target_blank(raw_html):
     """Adds 'target=_blank' attribute to all `<a href=...>` links """
-    return bytes(re.sub(r'(<a[^>]*>)', _match_fn, raw_html.decode('utf-8')), encoding='utf-8')
+    return re.sub(r'(<a[^>]*>)', _match_fn, raw_html)
 
 
 def _match_fn(matchobj):
