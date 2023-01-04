@@ -30,8 +30,8 @@ setup(
     ],
     install_requires=[
         'XBlock',
-        'nbconvert',
-        'nbformat',
+        'nbconvert==6.5.0',
+        'nbformat==5.3.0',
         'requests'
     ],
     entry_points={
